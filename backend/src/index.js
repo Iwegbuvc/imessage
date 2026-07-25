@@ -10,8 +10,9 @@ import job from "./lib/cron.js";
 import clerkWebhook from "./webhooks/clerk.webhook.js";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
+import { app, server } from "./lib/socket.js";
 
-const app = express();
+// const app = express(); Deleted because we are defining it in socket.io file
 const PORT = process.env.PORT;
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
@@ -44,8 +45,8 @@ if (fs.existsSync(publicDir)) {
     res.sendFile(path.join(publicDir, "index.html"), (err) => next(err));
   });
 }
-
-app.listen(PORT, () => {
+// We changed from app.listen to server because of socket.io
+server.listen(PORT, () => {
   connectDB();
   console.log("Server is up and running on PORT:", PORT);
 
